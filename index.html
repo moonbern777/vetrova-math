@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ирина Ветрова — репетитор по математике</title>
+<meta name="description" content="Подготовка к ЕГЭ и ОГЭ по математике онлайн и очно. Бесплатная диагностика, личный план и пробники каждый месяц.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Geologica:wght@400;600;700;800&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a squared school notebook in light mode, a chalkboard in dark mode. Blue pen for actions, red pen for marks. */
+:root {
+  --paper: #fbfcfe;
+  --surface: #ffffff;
+  --grid: rgba(64, 112, 196, .13);
+  --ink: #16233f;
+  --muted: #55607a;
+  --pen: #2347c5;
+  --on-pen: #ffffff;
+  --red: #d62839;
+  --line: rgba(22, 35, 63, .14);
+  --band: #16233f;
+  --on-band: #eef1f8;
+
+  --display: "Geologica", "Segoe UI", system-ui, sans-serif;
+  --body: "Golos Text", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", Consolas, monospace;
+  --hand: "Bad Script", "Segoe Print", cursive;
+
+  --fs-xs: .8125rem;
+  --fs-sm: .9375rem;
+  --fs-md: 1.0625rem;
+  --fs-lg: clamp(1.15rem, 1.05rem + .5vw, 1.4rem);
+  --fs-xl: clamp(1.6rem, 1.2rem + 1.8vw, 2.6rem);
+  --fs-2xl: clamp(2rem, 1.2rem + 3.4vw, 4rem);
+  --fs-hero: clamp(2.3rem, 1rem + 5vw, 5rem);
+
+  --gutter: clamp(16px, 4vw, 48px);
+  --cell: 24px;
+  --radius: 18px;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #1d2924; --surface: #24322c; --grid: rgba(230, 236, 225, .06);
+    --ink: #ecefe6; --muted: #a9b5ab; --pen: #f2d16b; --on-pen: #1d2924; --red: #ff9a9a;
+    --line: rgba(236, 239, 230, .14); --band: #141d19; --on-band: #ecefe6;
+    color-scheme: dark;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box }
+[hidden] { display: none !important }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: var(--cell) var(--cell);
+  color: var(--ink);
+  font: 400 var(--fs-md)/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.08; letter-spacing: -.025em; margin: 0; text-wrap: balance }
+p { margin: 0; text-wrap: pretty }
+a { color: inherit }
+img, svg, canvas { display: block; max-width: 100% }
+:focus-visible { outline: 3px solid var(--pen); outline-offset: 3px; border-radius: 6px }
+::selection { background: var(--pen); color: var(--on-pen) }
+
+.wrap {
+  width: 100%; max-width: 1240px; margin-inline: auto;
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+}
+section { scroll-margin-top: 80px }
+.section { padding-block: clamp(72px, 10vw, 136px) }
+.eyebrow { font: 500 var(--fs-xs)/1.2 var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted) }
+.hand { font-family: var(--hand); color: var(--red); line-height: 1.2 }
+.lead { font-size: var(--fs-lg); line-height: 1.5; color: var(--muted); max-width: 40ch }
+.head { display: grid; gap: 16px; margin-bottom: clamp(36px, 5vw, 60px); max-width: 720px }
+.head h2 { font-size: var(--fs-2xl) }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 16px 24px; border-radius: 12px; border: 1.5px solid var(--pen);
+  background: var(--pen); color: var(--on-pen); font: 600 var(--fs-sm)/1.2 var(--body); text-decoration: none; cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink); transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink) }
+.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink) }
+.btn-ghost { background: var(--surface); color: var(--ink); border-color: var(--ink) }
+
+/* Header */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  padding-top: env(safe-area-inset-top, 0px);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.header-in { display: flex; align-items: center; gap: 24px; padding-block: 14px }
+.logo { text-decoration: none; display: grid; line-height: 1.1 }
+.logo b { font: 700 1.15rem/1.1 var(--display); letter-spacing: -.02em }
+.logo small { font: 400 .72rem/1.3 var(--mono); color: var(--muted) }
+.nav { gap: 26px; margin-left: auto }
+.nav a { text-decoration: none; font-size: var(--fs-sm); background: linear-gradient(var(--red), var(--red)) 0 100% / 0 2px no-repeat; transition: background-size .3s var(--ease); padding-bottom: 2px }
+.nav a:hover { background-size: 100% 2px }
+.header-cta { padding: 12px 18px }
+.burger, .nav-close { display: none }
+@media (min-width: 961px) {
+  .nav[popover] { display: flex; position: static; inset: auto; margin: 0 0 0 auto; padding: 0; border: 0; background: none; color: inherit; overflow: visible; width: auto; height: auto }
+}
+@media (max-width: 960px) {
+  .header-cta { display: none }
+  .burger {
+    display: grid; place-items: center; margin-left: auto; width: 46px; height: 46px; border-radius: 12px;
+    border: 1.5px solid var(--ink); background: var(--surface); color: var(--ink); cursor: pointer;
+  }
+  .burger svg { width: 20px; height: 20px }
+  .nav[popover] {
+    position: fixed; inset: 0; width: 100%; height: 100%; margin: 0; border: 0;
+    padding: calc(96px + env(safe-area-inset-top, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px)) 40px max(var(--gutter), env(safe-area-inset-left, 0px));
+    background-color: var(--paper); color: var(--ink); flex-direction: column; gap: 8px;
+  }
+  .nav[popover]:popover-open { display: flex; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: var(--cell) var(--cell) }
+  .nav a { font: 700 clamp(1.8rem, 8vw, 2.4rem)/1.35 var(--display); letter-spacing: -.02em; width: max-content }
+  .nav-close {
+    display: grid; place-items: center; position: absolute; top: calc(14px + env(safe-area-inset-top, 0px)); right: max(var(--gutter), env(safe-area-inset-right, 0px));
+    width: 46px; height: 46px; border-radius: 12px; border: 1.5px solid var(--ink); background: var(--surface); color: var(--ink); font-size: 1.5rem; cursor: pointer;
+  }
+}
+
+/* Hero */
+.hero { padding-block: clamp(36px, 6vw, 80px) clamp(64px, 8vw, 110px) }
+.hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(36px, 5vw, 72px); align-items: center }
+.hero-copy { display: grid; gap: 26px; min-width: 0 }
+.hero h1 { font-size: var(--fs-hero); font-weight: 800; letter-spacing: -.04em; line-height: 1 }
+.circled { position: relative; display: inline-block; color: var(--red); padding-inline: .08em }
+.circled svg { position: absolute; left: -16%; top: -22%; width: 132%; height: 144%; overflow: visible; pointer-events: none }
+.circled path, .pen path { fill: none; stroke: var(--red); stroke-width: 3px; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0 }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 14px }
+.facts { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; margin: 0; padding: 0 }
+.facts li { padding: 8px 12px; border: 1px dashed var(--line); border-radius: 10px; background: var(--surface); font-size: var(--fs-sm) }
+.facts b { font-family: var(--mono); font-weight: 500 }
+
+.sheet {
+  --margin: 64px;
+  position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+  padding: 18px calc(var(--margin) + 14px) 18px 22px; transform: rotate(1.2deg);
+  box-shadow: 0 1px 0 var(--line), 0 30px 60px -30px rgba(22, 35, 63, .45);
+  min-width: 0;
+}
+/* Red margin line, as in a school exercise book */
+.sheet::after { content: ""; position: absolute; top: 0; bottom: 0; right: var(--margin); width: 1.5px; background: var(--red); opacity: .5 }
+.sheet-top { margin-bottom: 10px; text-align: center; font: 400 1.15rem/1.3 var(--hand); color: var(--pen) }
+.mark { position: absolute; right: 0; width: var(--margin); bottom: 64px; text-align: center; font: 400 3rem/1 var(--hand); color: var(--red); transform: rotate(-10deg) }
+@media (max-width: 520px) { .sheet { --margin: 44px; padding-left: 14px } .mark { font-size: 2.2rem } }
+#graph { width: 100%; aspect-ratio: 4 / 3; touch-action: pan-y; cursor: ew-resize; border-radius: 4px }
+.formula { margin-top: 12px; font: 500 clamp(1rem, .9rem + .5vw, 1.25rem)/1.3 var(--mono); color: var(--ink); font-variant-numeric: tabular-nums }
+.slider { display: flex; align-items: center; gap: 12px; margin-top: 10px; font: 400 var(--fs-xs)/1 var(--mono); color: var(--muted) }
+.slider input { flex: 1; accent-color: var(--pen) }
+.sheet-hint { margin-top: 8px; font-size: 1.05rem }
+
+/* Results */
+.results { border-block: 1.5px solid var(--ink); background: var(--surface) }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0 }
+.stat { padding: clamp(28px, 4vw, 48px) clamp(16px, 2vw, 28px); border-left: 1px solid var(--line); view-timeline: --stat }
+.stat:first-child { border-left: 0 }
+.stat dt { font: 800 clamp(2.6rem, 1.6rem + 3.4vw, 4.6rem)/1 var(--display); letter-spacing: -.04em; font-variant-numeric: tabular-nums; width: max-content; position: relative }
+.stat dd { margin: 18px 0 0; color: var(--muted); font-size: var(--fs-sm); max-width: 22ch }
+.pen { position: absolute; left: -4%; bottom: -14px; width: 108%; height: 14px; overflow: visible }
+@media (max-width: 860px) {
+  .stats { grid-template-columns: 1fr 1fr }
+  .stat:nth-child(3) { border-left: 0 }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--line) }
+}
+
+/* Programs */
+.programs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; list-style: none; margin: 0; padding: 0 }
+.program {
+  display: flex; flex-direction: column; gap: 14px; padding: 26px; background: var(--surface);
+  border: 1.5px solid var(--ink); border-radius: var(--radius); transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.program:hover { transform: translateY(-4px); box-shadow: 6px 6px 0 var(--pen) }
+.program .eyebrow { color: var(--pen) }
+.program h3 { font-size: 1.45rem }
+.program p { color: var(--muted); font-size: var(--fs-sm); flex: 1 }
+.program footer { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding-top: 14px; border-top: 1px dashed var(--line); font: 500 var(--fs-sm)/1.2 var(--mono) }
+.program footer span { color: var(--muted); font-family: var(--body); font-weight: 400 }
+@media (max-width: 1080px) { .programs { grid-template-columns: 1fr 1fr } }
+@media (max-width: 600px) { .programs { grid-template-columns: 1fr } }
+
+/* Steps */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(20px, 3vw, 40px); list-style: none; margin: 0; padding: 0; counter-reset: step }
+.step { display: grid; gap: 12px; align-content: start; padding-top: 22px; border-top: 2px dashed var(--line); counter-increment: step; position: relative }
+.step::before { content: counter(step) "."; font: 400 2.6rem/1 var(--hand); color: var(--red) }
+.step h3 { font-size: 1.3rem }
+.step p { color: var(--muted); font-size: var(--fs-sm) }
+@media (max-width: 860px) { .steps { grid-template-columns: 1fr 1fr } }
+@media (max-width: 520px) { .steps { grid-template-columns: 1fr } }
+
+/* Quiz */
+.quiz-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(32px, 6vw, 88px); align-items: start }
+.quiz {
+  background: var(--surface); border: 1.5px solid var(--ink); border-radius: var(--radius);
+  padding: clamp(22px, 3vw, 36px); display: grid; gap: 22px; box-shadow: 8px 8px 0 var(--pen); min-width: 0;
+}
+.quiz-top { display: flex; justify-content: space-between; gap: 12px; font: 400 var(--fs-xs)/1.3 var(--mono); color: var(--muted) }
+.quiz-q { font: 600 var(--fs-lg)/1.45 var(--body) }
+.quiz-q code { font: 500 1em/1 var(--mono); background: color-mix(in srgb, var(--pen) 10%, transparent); padding: 2px 6px; border-radius: 6px; white-space: nowrap }
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
+.option {
+  padding: 16px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--paper); color: var(--ink);
+  font: 500 var(--fs-md)/1.2 var(--mono); cursor: pointer; text-align: left; transition: border-color .2s, transform .2s var(--ease);
+}
+.option:hover:not(:disabled) { border-color: var(--ink); transform: translateY(-2px) }
+.option:disabled { cursor: default }
+.option.right { border-color: var(--pen); background: color-mix(in srgb, var(--pen) 12%, var(--surface)); color: var(--ink) }
+.option.wrong { border-color: var(--red); text-decoration: line-through; text-decoration-color: var(--red); color: var(--muted) }
+.feedback { min-height: 3.2em; font-size: var(--fs-sm); color: var(--muted) }
+.feedback .hand { font-size: 1.5rem; display: block; margin-bottom: 4px }
+.quiz-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap }
+@media (max-width: 440px) { .options { grid-template-columns: 1fr } }
+
+/* Prices */
+.prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; list-style: none; margin: 0; padding: 0; align-items: stretch }
+.price-card { display: flex; flex-direction: column; gap: 16px; padding: 30px; background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius); position: relative }
+.price-card.featured { border-color: var(--pen); box-shadow: 0 0 0 3px color-mix(in srgb, var(--pen) 20%, transparent) }
+.price-card .hand { position: absolute; top: -18px; right: 18px; font-size: 1.25rem; background: var(--paper); padding: 0 8px; transform: rotate(-3deg) }
+.price-card h3 { font-size: 1.35rem }
+.amount { font: 800 clamp(2rem, 1.6rem + 1.4vw, 2.8rem)/1 var(--display); letter-spacing: -.03em; font-variant-numeric: tabular-nums }
+.amount small { font: 400 var(--fs-sm)/1 var(--body); color: var(--muted); letter-spacing: 0; margin-left: 6px }
+.price-card ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; flex: 1; font-size: var(--fs-sm) }
+.price-card li { display: flex; gap: 10px }
+.price-card li::before { content: "✓"; color: var(--pen); font-weight: 600 }
+.price-note { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--muted); font-size: var(--fs-sm) }
+@media (max-width: 900px) { .prices { grid-template-columns: 1fr } }
+
+/* Reviews */
+.reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; list-style: none; margin: 0; padding: 0 }
+.review { display: flex; flex-direction: column; gap: 18px; padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius) }
+.grade { align-self: flex-start; font: 400 1.35rem/1 var(--hand); color: var(--red); border: 2px solid var(--red); border-radius: 50% 46% 52% 48%; padding: 10px 14px; transform: rotate(-4deg) }
+.review blockquote { margin: 0; flex: 1; line-height: 1.6 }
+.review cite { font-style: normal; font-weight: 600; font-size: var(--fs-sm) }
+.review cite small { display: block; font-weight: 400; color: var(--muted) }
+.demo-note { margin-top: 22px; color: var(--muted); font-size: var(--fs-sm) }
+@media (max-width: 900px) { .reviews { grid-template-columns: 1fr } }
+
+/* FAQ */
+.faq-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(32px, 6vw, 88px); align-items: start }
+.faq details { border-bottom: 1px solid var(--line) }
+.faq summary {
+  list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 20px; align-items: center;
+  padding: 22px 0; font: 600 var(--fs-lg)/1.3 var(--display); letter-spacing: -.01em;
+}
+.faq summary::-webkit-details-marker { display: none }
+.faq summary::after { content: "+"; flex: none; width: 34px; height: 34px; display: grid; place-items: center; border: 1.5px solid var(--ink); border-radius: 50%; font: 400 1.3rem/1 var(--mono); transition: transform .3s var(--ease) }
+.faq details[open] summary::after { transform: rotate(45deg) }
+.faq details p { padding: 0 48px 22px 0; color: var(--muted) }
+
+/* Booking */
+.book { background: var(--band); color: var(--on-band); background-image: linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px); background-size: var(--cell) var(--cell) }
+.book-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(32px, 6vw, 88px); align-items: start }
+.book-copy { display: grid; gap: 24px; min-width: 0 }
+.book-copy h2 { font-size: var(--fs-xl) }
+.book-copy .lead { color: color-mix(in srgb, var(--on-band) 72%, transparent) }
+.contacts { display: grid; gap: 10px; margin-top: 6px }
+.contacts a, .contacts div {
+  display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 16px 20px;
+  border: 1px solid rgba(238, 241, 248, .2); border-radius: 12px; text-decoration: none; font-size: var(--fs-sm);
+}
+.contacts a:hover { border-color: var(--on-band) }
+.contacts span { color: color-mix(in srgb, var(--on-band) 65%, transparent) }
+.contacts b { font: 500 var(--fs-sm)/1.2 var(--mono) }
+
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: clamp(22px, 3vw, 34px); border-radius: var(--radius); background: var(--paper); color: var(--ink) }
+.field { display: grid; gap: 8px; min-width: 0 }
+.field.full { grid-column: 1 / -1 }
+.field label { font: 500 var(--fs-xs)/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted) }
+.field input, .field select, .field textarea {
+  width: 100%; font: 400 var(--fs-md)/1.3 var(--body); color: var(--ink); background: var(--surface);
+  border: 1.5px solid var(--line); border-radius: 10px; padding: 14px 15px;
+}
+.field textarea { resize: vertical; min-height: 88px }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--pen); box-shadow: 0 0 0 4px color-mix(in srgb, var(--pen) 18%, transparent) }
+.field input:user-invalid { border-color: var(--red) }
+.form .btn { grid-column: 1 / -1; padding-block: 18px; font-size: var(--fs-md) }
+.form-fine { grid-column: 1 / -1; font-size: var(--fs-xs); color: var(--muted); text-align: center }
+.done { display: grid; gap: 14px; justify-items: start; padding: clamp(24px, 4vw, 44px); border-radius: var(--radius); background: var(--paper); color: var(--ink) }
+.done .hand { font-size: 2.4rem }
+.done p { color: var(--muted) }
+@media (max-width: 560px) { .form { grid-template-columns: 1fr } }
+
+/* Footer */
+.footer { background: var(--band); color: var(--on-band); border-top: 1px solid rgba(238, 241, 248, .12) }
+.footer-in { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px; padding-block: 36px }
+.signature { font: 400 clamp(2.4rem, 1.8rem + 3vw, 4rem)/1 var(--hand); color: var(--on-band) }
+.footer p { font-size: var(--fs-xs); color: color-mix(in srgb, var(--on-band) 65%, transparent); line-height: 1.7 }
+
+/* Mobile action bar */
+.actionbar { display: none }
+@media (max-width: 760px) {
+  .actionbar {
+    position: fixed; z-index: 40; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px;
+    padding: 10px max(12px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+    background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--line);
+  }
+  .actionbar .btn { padding: 14px 10px; box-shadow: none }
+  .footer { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)) }
+}
+
+@media (max-width: 960px) {
+  .hero-grid, .quiz-grid, .faq-grid, .book-grid { grid-template-columns: 1fr }
+  .sheet { transform: rotate(.6deg) }
+}
+
+/* Motion */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth }
+  .hero-copy > * { animation: rise-in .8s var(--ease) both; animation-delay: calc(.09s * var(--i, 0)) }
+  .circled path { stroke-dashoffset: 1; animation: draw 1s .7s var(--ease) forwards }
+  .sheet { animation: drop .9s .25s var(--ease) both }
+  .mark { animation: stamp .5s 2.2s var(--ease) both }
+  @supports (animation-timeline: view()) {
+    .reveal { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 75% }
+    .pen path { animation: draw linear both; animation-timeline: --stat; animation-range: entry 40% cover 55% }
+  }
+}
+@keyframes rise-in { from { opacity: 0; transform: translateY(20px) } }
+@keyframes drop { from { opacity: 0; transform: translateY(40px) rotate(6deg) } }
+@keyframes stamp { from { opacity: 0; transform: scale(2.2) rotate(-10deg) } }
+@keyframes draw { from { stroke-dashoffset: 1 } to { stroke-dashoffset: 0 } }
+@keyframes rise { from { opacity: 0; transform: translateY(48px) } }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-in">
+    <a class="logo" href="#top"><b>Ирина Ветрова</b><small>математика · ЕГЭ · ОГЭ</small></a>
+    <button class="burger" popovertarget="nav" aria-label="Открыть меню">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+    </button>
+    <nav class="nav" id="nav" popover aria-label="Разделы сайта">
+      <button class="nav-close" popovertarget="nav" popovertargetaction="hide" aria-label="Закрыть меню">×</button>
+      <a href="#programs">Подготовка</a>
+      <a href="#quiz">Задача</a>
+      <a href="#prices">Цены</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#faq">Вопросы</a>
+    </nav>
+    <a class="btn header-cta" href="#book">Бесплатная диагностика</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow" style="--i:0">Репетитор по математике · 5–11 класс</p>
+        <h1 style="--i:1">Готовлю к ЕГЭ на <span class="circled">80+<svg viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M62 6C38 2 8 10 5 30c-3 20 30 27 55 24 26-3 38-14 35-28C92 10 70 3 46 5"/></svg></span> без зубрёжки</h1>
+        <p class="lead" style="--i:2">Занимаюсь онлайн и очно. Объясняю на графиках и простых примерах, поэтому ученики понимают тему и сами решают похожие задачи.</p>
+        <div class="hero-actions" style="--i:3">
+          <a class="btn" href="#book">Записаться на диагностику</a>
+          <a class="btn btn-ghost" href="#prices">Цены</a>
+        </div>
+        <ul class="facts" style="--i:4">
+          <li><b>12</b> лет преподаю</li>
+          <li>эксперт ЕГЭ с <b>2019</b></li>
+          <li><b>5,0</b> · 86 отзывов</li>
+        </ul>
+      </div>
+
+      <figure class="sheet" style="margin:0">
+        <p class="sheet-top" id="sheet-date">Классная работа</p>
+        <span class="mark" aria-hidden="true">5</span>
+        <canvas id="graph" role="img" aria-label="График параболы на клетчатой бумаге. Ползунок под графиком сдвигает её вершину."></canvas>
+        <p class="formula" id="formula" aria-live="polite">y = 0,5(x − 1,0)² − 2</p>
+        <label class="slider" for="shift">сдвиг
+          <input id="shift" type="range" min="-4" max="4" step="0.1" value="1">
+        </label>
+        <figcaption class="hand sheet-hint">Подвигайте ползунок: так я объясняю графики</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="results" aria-label="Результаты учеников">
+    <div class="wrap">
+      <dl class="stats">
+        <div class="stat"><dt>84<svg class="pen" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M2 6c20-4 50-5 96-1"/></svg></dt><dd>средний балл учеников на ЕГЭ профильного уровня</dd></div>
+        <div class="stat"><dt>96%<svg class="pen" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M2 5c30 3 60-3 96 1"/></svg></dt><dd>сдали ОГЭ на «4» и «5»</dd></div>
+        <div class="stat"><dt>11<svg class="pen" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M2 4c25 4 55 3 96-1"/></svg></dt><dd>учеников набрали 90 баллов и выше</dd></div>
+        <div class="stat"><dt>127<svg class="pen" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M2 6c30-3 62-4 96 0"/></svg></dt><dd>учеников за 12 лет работы</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="programs">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Подготовка</p>
+        <h2>С чем я помогу</h2>
+      </div>
+      <ul class="programs">
+        <li class="program reveal"><p class="eyebrow">10–11 класс</p><h3>ЕГЭ профиль</h3><p>Цель 70–100 баллов. Вся вторая часть, включая экономическую задачу и параметры.</p><footer>2 000 ₽<span>за 60 минут</span></footer></li>
+        <li class="program reveal"><p class="eyebrow">11 класс</p><h3>ЕГЭ база</h3><p>Сдать уверенно на «5» за 3–4 месяца. Разбираем все 21 задание.</p><footer>1 800 ₽<span>за 60 минут</span></footer></li>
+        <li class="program reveal"><p class="eyebrow">8–9 класс</p><h3>ОГЭ</h3><p>Алгебра и геометрия, все 25 заданий. Учимся оформлять вторую часть так, как требуют эксперты.</p><footer>1 800 ₽<span>за 60 минут</span></footer></li>
+        <li class="program reveal"><p class="eyebrow">5–9 класс</p><h3>Школьная программа</h3><p>Закрываем пробелы и подтягиваем оценку в четверти. Помогаю с текущими темами и контрольными.</p><footer>1 600 ₽<span>за 60 минут</span></footer></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-labelledby="steps-title">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Как мы будем заниматься</p>
+        <h2 id="steps-title">От диагностики до экзамена</h2>
+      </div>
+      <ol class="steps">
+        <li class="step reveal"><h3>Бесплатная диагностика</h3><p>30 минут онлайн. Смотрю, какие темы ученик уже знает, а где пробелы.</p></li>
+        <li class="step reveal"><h3>Личный план</h3><p>Расписываю подготовку по неделям до самого экзамена и показываю план родителям.</p></li>
+        <li class="step reveal"><h3>Занятия и домашка</h3><p>Два раза в неделю. Домашние задания проверяю в тот же день и разбираю ошибки.</p></li>
+        <li class="step reveal"><h3>Пробники и отчёты</h3><p>Раз в месяц пишем пробный экзамен. Родители получают отчёт о прогрессе.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="quiz" style="padding-top:0">
+    <div class="wrap quiz-grid">
+      <div class="head">
+        <p class="eyebrow">Проверьте себя</p>
+        <h2>Три задачи из ЕГЭ за минуту</h2>
+        <p class="lead">Если какая-то не получилась, на диагностике разберём, почему.</p>
+      </div>
+      <div class="quiz reveal">
+        <div class="quiz-top"><span id="quiz-count">Задача 1 из 3</span><span id="quiz-tag">ЕГЭ профиль · № 6</span></div>
+        <p class="quiz-q" id="quiz-q"></p>
+        <div class="options" id="quiz-options"></div>
+        <div class="feedback" id="quiz-feedback" aria-live="polite"></div>
+        <div class="quiz-foot">
+          <span class="eyebrow" id="quiz-score">Решено: 0 из 3</span>
+          <button class="btn btn-ghost" id="quiz-next" type="button" hidden>Следующая задача</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="prices" style="padding-top:0">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Цены</p>
+        <h2>Сколько стоят занятия</h2>
+      </div>
+      <ul class="prices">
+        <li class="price-card featured reveal"><span class="hand">выбирают чаще всего</span><h3>Онлайн</h3><p class="amount">2 000 ₽<small>60 минут</small></p>
+          <ul><li>Видеосвязь и общая онлайн-доска</li><li>Запись каждого урока</li><li>Проверка домашки в чате</li></ul>
+          <a class="btn" href="#book">Записаться</a></li>
+        <li class="price-card reveal"><h3>Очно</h3><p class="amount">2 500 ₽<small>60 минут</small></p>
+          <ul><li>Кабинет в центре города</li><li>Все материалы и тетради мои</li><li>Проверка домашки в чате</li></ul>
+          <a class="btn btn-ghost" href="#book">Записаться</a></li>
+        <li class="price-card reveal"><h3>Мини-группа</h3><p class="amount">1 200 ₽<small>90 минут</small></p>
+          <ul><li>3–4 ученика одного уровня</li><li>ОГЭ и ЕГЭ базового уровня</li><li>Пробник раз в месяц</li></ul>
+          <a class="btn btn-ghost" href="#book">Записаться</a></li>
+      </ul>
+      <p class="price-note"><span>Диагностика 30 минут бесплатно.</span><span>Пакет из 8 занятий со скидкой 10%.</span></p>
+    </div>
+  </section>
+
+  <section class="section" id="reviews" style="padding-top:0">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Отзывы</p>
+        <h2>Ученики и родители</h2>
+      </div>
+      <ul class="reviews">
+        <li class="review reveal"><span class="grade">ЕГЭ: 86</span><blockquote>Сын пришёл с 40 баллами на пробнике и сдал ЕГЭ на 86. Главное, что он перестал бояться второй части.</blockquote><cite>Ольга<small>мама Максима</small></cite></li>
+        <li class="review reveal"><span class="grade">ЕГЭ: 92</span><blockquote>Ирина Сергеевна объясняет через графики, и параметры перестали казаться магией. На экзамене решил всё, кроме последней задачи.</blockquote><cite>Артём<small>выпускник 2026 года</small></cite></li>
+        <li class="review reveal"><span class="grade">ОГЭ: 5</span><blockquote>Готовились к ОГЭ полгода. Отчёты после каждого пробника помогали понимать, где мы сейчас и что подтянуть.</blockquote><cite>Наталья<small>мама Вики</small></cite></li>
+      </ul>
+      <p class="demo-note">Это демо-концепт: на настоящем сайте здесь будут отзывы ваших учеников.</p>
+    </div>
+  </section>
+
+  <section class="section" id="faq" style="padding-top:0">
+    <div class="wrap faq-grid">
+      <div class="head">
+        <p class="eyebrow">Вопросы</p>
+        <h2>Частые вопросы</h2>
+      </div>
+      <div class="faq">
+        <details open><summary>Как проходят онлайн-занятия?</summary><p>По видеосвязи с общей онлайн-доской: я пишу решение, ученик пишет своё рядом. Каждый урок записывается, к нему можно вернуться перед контрольной.</p></details>
+        <details><summary>Что если занятие пропущено?</summary><p>Предупредите за 12 часов, и мы перенесём урок на другой день без оплаты. Если урок пропущен без предупреждения, он считается проведённым.</p></details>
+        <details><summary>Можно начать в середине года?</summary><p>Да. После диагностики я составлю план под оставшееся время. За 4–5 месяцев реально поднять результат на 20–30 баллов.</p></details>
+        <details><summary>Как оплачивать занятия?</summary><p>Переводом по СБП после урока или пакетом из 8 занятий со скидкой 10%. Выдаю чек как самозанятая.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section book" id="book">
+    <div class="wrap book-grid">
+      <div class="book-copy">
+        <p class="eyebrow" style="color:inherit;opacity:.7">Запись</p>
+        <h2>Запишитесь на бесплатную диагностику</h2>
+        <p class="lead">30 минут онлайн. Пойму уровень ученика и расскажу, сколько занятий понадобится, чтобы прийти к цели.</p>
+        <div class="contacts">
+          <!-- Demo contacts: replace with the client's phone and messenger links -->
+          <a href="https://t.me/" target="_blank" rel="noopener"><span>Telegram</span><b>написать →</b></a>
+          <div><span>Телефон</span><b>+7 000 000-00-00</b></div>
+          <div><span>Время занятий</span><b>Пн–Сб, 10:00–21:00</b></div>
+        </div>
+      </div>
+
+      <div>
+        <form class="form" id="book-form">
+          <div class="field"><label for="b-name">Имя</label><input id="b-name" name="name" autocomplete="name" required placeholder="Как к вам обращаться"></div>
+          <div class="field"><label for="b-contact">Телефон или Telegram</label><input id="b-contact" name="contact" required minlength="5" placeholder="+7 … или @ник"></div>
+          <div class="field"><label for="b-grade">Класс</label>
+            <select id="b-grade" name="grade"><option>5</option><option>6</option><option>7</option><option>8</option><option selected>9</option><option>10</option><option>11</option></select>
+          </div>
+          <div class="field"><label for="b-goal">Цель</label>
+            <select id="b-goal" name="goal"><option>ЕГЭ профиль</option><option>ЕГЭ база</option><option selected>ОГЭ</option><option>Школьная программа</option></select>
+          </div>
+          <div class="field full"><label for="b-note">Комментарий</label><textarea id="b-note" name="note" placeholder="Например: последние оценки, какие темы трудные"></textarea></div>
+          <button class="btn" type="submit">Записаться на диагностику</button>
+          <p class="form-fine">Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</p>
+        </form>
+
+        <div class="done" id="book-done" hidden tabindex="-1">
+          <span class="hand">Отлично!</span>
+          <p data-done-text></p>
+          <p><small>Это демо: на настоящем сайте заявка сразу приходит репетитору в Telegram.</small></p>
+          <button class="btn btn-ghost" type="button" data-again>Новая заявка</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-in">
+    <p class="signature" aria-hidden="true">И. Ветрова</p>
+    <p>© 2026 Ирина Ветрова, репетитор по математике<br>Демо-концепт для портфолио. Репетитор вымышленный.</p>
+  </div>
+</footer>
+
+<nav class="actionbar" aria-label="Быстрые действия">
+  <a class="btn btn-ghost" href="https://t.me/" target="_blank" rel="noopener">Telegram</a>
+  <a class="btn" href="#book">Записаться</a>
+</nav>
+
+<script>
+// Hero graph: y = A(x - h)² + K on squared paper
+const A = 0.5, K = -2;
+const canvas = document.getElementById('graph');
+const ctx = canvas.getContext('2d');
+const shift = document.getElementById('shift');
+const formulaEl = document.getElementById('formula');
+let h = +shift.value, progress = matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 0, colors;
+
+const num = v => Math.abs(v).toFixed(1).replace('.', ',');
+const formula = h => Math.abs(h) < 0.05 ? 'y = 0,5x² − 2' : `y = 0,5(x ${h > 0 ? '−' : '+'} ${num(h)})² − 2`;
+console.assert(formula(-1.3) === 'y = 0,5(x + 1,3)² − 2' && formula(0) === 'y = 0,5x² − 2', 'formula');
+
+function readColors() {
+  const s = getComputedStyle(document.documentElement);
+  colors = Object.fromEntries(['grid', 'muted', 'pen', 'red', 'ink'].map(k => [k, s.getPropertyValue('--' + k).trim()]));
+}
+
+function draw() {
+  const dpr = devicePixelRatio || 1, W = canvas.clientWidth, H = canvas.clientHeight;
+  if (canvas.width !== Math.round(W * dpr)) { canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr); }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, W, H);
+  const u = W / 12, ox = W / 2, oy = H * 0.64;
+
+  ctx.strokeStyle = colors.grid; ctx.lineWidth = 1; ctx.beginPath();
+  for (let x = ox % (u / 2); x < W; x += u / 2) { ctx.moveTo(Math.round(x) + .5, 0); ctx.lineTo(Math.round(x) + .5, H); }
+  for (let y = oy % (u / 2); y < H; y += u / 2) { ctx.moveTo(0, Math.round(y) + .5); ctx.lineTo(W, Math.round(y) + .5); }
+  ctx.stroke();
+
+  ctx.strokeStyle = colors.muted; ctx.fillStyle = colors.muted; ctx.lineWidth = 1.5; ctx.beginPath();
+  ctx.moveTo(0, oy); ctx.lineTo(W - 2, oy); ctx.moveTo(ox, H); ctx.lineTo(ox, 2); ctx.stroke();
+  ctx.font = '13px "JetBrains Mono", monospace';
+  ctx.fillText('x', W - 14, oy - 8); ctx.fillText('y', ox + 8, 14);
+
+  ctx.strokeStyle = colors.pen; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.beginPath();
+  const end = -6 + 12 * progress;
+  for (let x = -6; x <= end; x += 0.04) {
+    const px = ox + x * u, py = oy - (A * (x - h) ** 2 + K) * u;
+    x === -6 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  if (progress === 1) {
+    const vx = ox + h * u, vy = oy - K * u;
+    ctx.setLineDash([4, 5]); ctx.strokeStyle = colors.red; ctx.lineWidth = 1.5; ctx.beginPath();
+    ctx.moveTo(vx, vy); ctx.lineTo(vx, oy); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = colors.red; ctx.beginPath(); ctx.arc(vx, vy, 6, 0, Math.PI * 2); ctx.fill();
+    ctx.font = '19px "Bad Script", cursive';
+    const label = 'вершина';
+    const lx = Math.min(Math.max(vx + 12, 8), W - ctx.measureText(label).width - 8);
+    ctx.fillText(label, lx, vy + 26);
+  }
+}
+
+function setShift(v) {
+  h = Math.max(-4, Math.min(4, Math.round(v * 10) / 10));
+  shift.value = h;
+  formulaEl.textContent = formula(h);
+  draw();
+}
+
+document.getElementById('sheet-date').textContent = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }) + '. Классная работа';
+readColors();
+setShift(h);
+shift.addEventListener('input', () => setShift(+shift.value));
+canvas.addEventListener('pointermove', e => {
+  if (e.pointerType === 'mouse' || e.buttons) {
+    const r = canvas.getBoundingClientRect();
+    setShift((e.clientX - r.left - r.width / 2) / (r.width / 12));
+  }
+});
+new ResizeObserver(draw).observe(canvas);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); draw(); });
+document.fonts.ready.then(draw);
+if (progress < 1) {
+  const start = performance.now() + 500;
+  const step = now => { progress = Math.min(1, Math.max(0, (now - start) / 1400)); draw(); if (progress < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+
+// Quiz
+const TASKS = [
+  { tag: 'ЕГЭ профиль · № 6', q: 'Найдите корень уравнения <code>log₂(x − 3) = 4</code>.', options: ['7', '11', '19', '35'], answer: '19', why: 'По определению логарифма x − 3 = 2⁴ = 16, значит x = 19.' },
+  { tag: 'ЕГЭ база · геометрия', q: 'В прямоугольном треугольнике катеты равны 6 и 8. Найдите гипотенузу.', options: ['10', '12', '14', '7'], answer: '10', why: 'По теореме Пифагора: √(6² + 8²) = √100 = 10.' },
+  { tag: 'ЕГЭ профиль · № 9', q: 'Цена выросла на 20%, а потом снизилась на 20%. Как изменилась цена?', options: ['не изменилась', 'снизилась на 4%', 'выросла на 4%', 'снизилась на 2%'], answer: 'снизилась на 4%', why: '1,2 · 0,8 = 0,96. Цена стала на 4% ниже исходной. Это классическая ловушка.' },
+];
+let task = 0, solved = 0;
+const $ = id => document.getElementById(id);
+
+function showTask() {
+  const t = TASKS[task];
+  $('quiz-count').textContent = `Задача ${task + 1} из ${TASKS.length}`;
+  $('quiz-tag').textContent = t.tag;
+  $('quiz-q').innerHTML = t.q;
+  $('quiz-feedback').textContent = '';
+  $('quiz-next').hidden = true;
+  $('quiz-options').replaceChildren(...t.options.map(text => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'option'; b.textContent = text;
+    b.addEventListener('click', () => answer(b));
+    return b;
+  }));
+}
+
+function answer(btn) {
+  const t = TASKS[task], ok = btn.textContent === t.answer;
+  if (ok) solved++;
+  $('quiz-options').querySelectorAll('button').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === t.answer) b.classList.add('right');
+    else if (b === btn) b.classList.add('wrong');
+  });
+  $('quiz-feedback').innerHTML = `<span class="hand">${ok ? 'Верно, молодец!' : 'Почти. Смотрите:'}</span>${t.why}`;
+  $('quiz-score').textContent = `Решено: ${solved} из ${TASKS.length}`;
+  const last = task === TASKS.length - 1;
+  $('quiz-next').textContent = last ? 'Решить заново' : 'Следующая задача';
+  $('quiz-next').hidden = false;
+}
+
+$('quiz-next').addEventListener('click', () => {
+  if (task === TASKS.length - 1) { task = 0; solved = 0; $('quiz-score').textContent = `Решено: 0 из ${TASKS.length}`; }
+  else task++;
+  showTask();
+});
+showTask();
+
+// Mobile menu: close after picking a section
+const nav = $('nav');
+nav.addEventListener('click', e => { if (e.target.closest('a') && nav.matches(':popover-open')) nav.hidePopover(); });
+
+// Booking form. shortcut: the demo only shows a confirmation; connect a Telegram bot or form service per client.
+const form = $('book-form'), done = $('book-done');
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const f = new FormData(form);
+  done.querySelector('[data-done-text]').textContent = `${f.get('name')}, спасибо! Напишу вам по контакту ${f.get('contact')} в течение дня, чтобы договориться о времени диагностики (${f.get('goal')}, ${f.get('grade')} класс).`;
+  form.hidden = true; done.hidden = false; done.focus();
+});
+done.querySelector('[data-again]').addEventListener('click', () => { form.reset(); done.hidden = true; form.hidden = false; });
+</script>
+</body>
+</html>
